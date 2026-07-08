@@ -12,12 +12,12 @@ import (
 type FormatType string
 
 const (
-	FormatUnified     FormatType = "unified"
-	FormatSideBySide  FormatType = "side-by-side"
-	FormatJSON        FormatType = "json"
-	FormatHTML        FormatType = "html"
-	FormatContext     FormatType = "context"
-	FormatMinimal     FormatType = "minimal"
+	FormatUnified    FormatType = "unified"
+	FormatSideBySide FormatType = "side-by-side"
+	FormatJSON       FormatType = "json"
+	FormatHTML       FormatType = "html"
+	FormatContext    FormatType = "context"
+	FormatMinimal    FormatType = "minimal"
 )
 
 // Unified formats a text diff in unified diff format.
@@ -27,14 +27,14 @@ func Unified(result *diff.DiffResult, oldName, newName string) string {
 	}
 
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("--- %s\n", oldName))
-	sb.WriteString(fmt.Sprintf("+++ %s\n", newName))
+	fmt.Fprintf(&sb, "--- %s\n", oldName)
+	fmt.Fprintf(&sb, "+++ %s\n", newName)
 
 	// Group operations into hunks
 	hunks := groupHunks(result.Ops, 3) // 3 lines of context
 	for _, hunk := range hunks {
-		sb.WriteString(fmt.Sprintf("@@ -%d,%d +%d,%d @@\n",
-			hunk.oldStart, hunk.oldCount, hunk.newStart, hunk.newCount))
+		fmt.Fprintf(&sb, "@@ -%d,%d +%d,%d @@\n",
+			hunk.oldStart, hunk.oldCount, hunk.newStart, hunk.newCount)
 		for _, op := range hunk.ops {
 			switch op.Type {
 			case diff.OpEqual:
@@ -62,7 +62,7 @@ func SideBySide(result *diff.DiffResult, oldName, newName string, width int) str
 	halfWidth := (width - 3) / 2 // -3 for the separator column
 
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("=== %s vs %s ===\n\n", oldName, newName))
+	fmt.Fprintf(&sb, "=== %s vs %s ===\n\n", oldName, newName)
 
 	lineNum := 1
 	for _, op := range result.Ops {
@@ -70,15 +70,15 @@ func SideBySide(result *diff.DiffResult, oldName, newName string, width int) str
 		case diff.OpEqual:
 			oldLine := truncate(op.OldLine, halfWidth)
 			newLine := truncate(op.NewLine, halfWidth)
-			sb.WriteString(fmt.Sprintf("%4d | %-*s | %s\n", lineNum, halfWidth, oldLine, newLine))
+			fmt.Fprintf(&sb, "%4d | %-*s | %s\n", lineNum, halfWidth, oldLine, newLine)
 			lineNum++
 		case diff.OpDelete:
 			oldLine := truncate(op.OldLine, halfWidth)
-			sb.WriteString(fmt.Sprintf("%4d | %-*s | %-*s\n", lineNum, halfWidth, oldLine, halfWidth, ""))
+			fmt.Fprintf(&sb, "%4d | %-*s | %-*s\n", lineNum, halfWidth, oldLine, halfWidth, "")
 			lineNum++
 		case diff.OpInsert:
 			newLine := truncate(op.NewLine, halfWidth)
-			sb.WriteString(fmt.Sprintf("%4d | %-*s | %s\n", lineNum, halfWidth, "", newLine))
+			fmt.Fprintf(&sb, "%4d | %-*s | %s\n", lineNum, halfWidth, "", newLine)
 			lineNum++
 		}
 	}
@@ -94,8 +94,8 @@ func Minimal(result *diff.DiffResult) string {
 
 	var sb strings.Builder
 	added, removed, _ := result.Stats()
-	sb.WriteString(fmt.Sprintf("%d files changed, %d insertions(+), %d deletions(-)\n",
-		1, added, removed))
+	fmt.Fprintf(&sb, "%d files changed, %d insertions(+), %d deletions(-)\n",
+		1, added, removed)
 
 	for _, op := range result.Ops {
 		switch op.Type {
@@ -120,8 +120,8 @@ func Context(result *diff.DiffResult, oldName, newName string, contextLines int)
 	}
 
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("*** %s\n", oldName))
-	sb.WriteString(fmt.Sprintf("--- %s\n", newName))
+	fmt.Fprintf(&sb, "*** %s\n", oldName)
+	fmt.Fprintf(&sb, "--- %s\n", newName)
 
 	hunks := groupHunks(result.Ops, contextLines)
 	for _, hunk := range hunks {

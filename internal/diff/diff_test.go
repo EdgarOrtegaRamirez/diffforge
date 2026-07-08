@@ -393,13 +393,23 @@ func TestDirDiff(t *testing.T) {
 	newDir := t.TempDir()
 
 	// Create files in old
-	os.WriteFile(oldDir+"/file1.txt", []byte("old content"), 0644)
-	os.WriteFile(oldDir+"/file2.txt", []byte("same content"), 0644)
+	if err := os.WriteFile(oldDir+"/file1.txt", []byte("old content"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(oldDir+"/file2.txt", []byte("same content"), 0644); err != nil {
+		t.Fatal(err)
+	}
 
 	// Create files in new
-	os.WriteFile(newDir+"/file1.txt", []byte("new content"), 0644)
-	os.WriteFile(newDir+"/file2.txt", []byte("same content"), 0644)
-	os.WriteFile(newDir+"/file3.txt", []byte("added content"), 0644)
+	if err := os.WriteFile(newDir+"/file1.txt", []byte("new content"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(newDir+"/file2.txt", []byte("same content"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(newDir+"/file3.txt", []byte("added content"), 0644); err != nil {
+		t.Fatal(err)
+	}
 
 	result, err := DirDiff(oldDir, newDir)
 	if err != nil {
