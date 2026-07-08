@@ -142,17 +142,17 @@ func FormatJSONDiff(result *JSONDiffResult, format string) string {
 	}
 
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("JSON Diff: %d added, %d removed, %d modified\n\n",
-		result.Added, result.Removed, result.Modified))
+	fmt.Fprintf(&sb, "JSON Diff: %d added, %d removed, %d modified\n\n",
+		result.Added, result.Removed, result.Modified)
 
 	for _, op := range result.Ops {
 		switch op.Type {
 		case OpInsert:
 			newVal, _ := json.MarshalIndent(op.New, "  ", "  ")
-			sb.WriteString(fmt.Sprintf("+ %s = %s\n", op.Path, string(newVal)))
+			fmt.Fprintf(&sb, "+ %s = %s\n", op.Path, string(newVal))
 		case OpDelete:
 			oldVal, _ := json.MarshalIndent(op.Old, "  ", "  ")
-			sb.WriteString(fmt.Sprintf("- %s = %s\n", op.Path, string(oldVal)))
+			fmt.Fprintf(&sb, "- %s = %s\n", op.Path, string(oldVal))
 		case OpEqual:
 			// Skip equal operations in output
 		}

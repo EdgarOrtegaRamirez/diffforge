@@ -166,19 +166,19 @@ func FormatDirDiff(result *DirDiffResult, oldDir, newDir string) string {
 	}
 
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("Directory Diff: %s vs %s\n", oldDir, newDir))
-	sb.WriteString(fmt.Sprintf("%d added, %d removed, %d modified, %d identical\n\n",
-		result.Added, result.Removed, result.Modified, result.Identical))
+	fmt.Fprintf(&sb, "Directory Diff: %s vs %s\n", oldDir, newDir)
+	fmt.Fprintf(&sb, "%d added, %d removed, %d modified, %d identical\n\n",
+		result.Added, result.Removed, result.Modified, result.Identical)
 
 	for _, op := range result.Ops {
 		switch op.Type {
 		case OpInsert:
-			sb.WriteString(fmt.Sprintf("+ %s (%d bytes)\n", op.Path, op.NewSize))
+			fmt.Fprintf(&sb, "+ %s (%d bytes)\n", op.Path, op.NewSize)
 		case OpDelete:
 			if op.NewSize > 0 {
-				sb.WriteString(fmt.Sprintf("~ %s (%d → %d bytes)\n", op.Path, op.OldSize, op.NewSize))
+				fmt.Fprintf(&sb, "~ %s (%d → %d bytes)\n", op.Path, op.OldSize, op.NewSize)
 			} else {
-				sb.WriteString(fmt.Sprintf("- %s (%d bytes)\n", op.Path, op.OldSize))
+				fmt.Fprintf(&sb, "- %s (%d bytes)\n", op.Path, op.OldSize)
 			}
 		}
 	}

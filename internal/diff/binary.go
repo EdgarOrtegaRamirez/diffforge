@@ -95,16 +95,16 @@ func FormatBinaryDiff(result *BinaryDiffResult) string {
 	}
 
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("Binary Diff: %d bytes total, %d added, %d removed\n\n",
-		result.TotalSize, result.Added, result.Removed))
+	fmt.Fprintf(&sb, "Binary Diff: %d bytes total, %d added, %d removed\n\n",
+		result.TotalSize, result.Added, result.Removed)
 
 	for _, chunk := range result.Chunks {
 		switch chunk.Type {
 		case "insert":
-			sb.WriteString(fmt.Sprintf("+ Offset 0x%04X (%d bytes)\n", chunk.Offset, chunk.Length))
+			fmt.Fprintf(&sb, "+ Offset 0x%04X (%d bytes)\n", chunk.Offset, chunk.Length)
 			sb.WriteString(hexDump(chunk.New))
 		case "delete":
-			sb.WriteString(fmt.Sprintf("- Offset 0x%04X (%d bytes)\n", chunk.Offset, chunk.Length))
+			fmt.Fprintf(&sb, "- Offset 0x%04X (%d bytes)\n", chunk.Offset, chunk.Length)
 			sb.WriteString(hexDump(chunk.Old))
 		}
 	}
@@ -115,14 +115,14 @@ func FormatBinaryDiff(result *BinaryDiffResult) string {
 func hexDump(data []byte) string {
 	var sb strings.Builder
 	for i := 0; i < len(data); i += 16 {
-		sb.WriteString(fmt.Sprintf("  %04X: ", i))
+		fmt.Fprintf(&sb, "  %04X: ", i)
 		// Hex part
 		end := i + 16
 		if end > len(data) {
 			end = len(data)
 		}
 		for j := i; j < end; j++ {
-			sb.WriteString(fmt.Sprintf("%02X ", data[j]))
+			fmt.Fprintf(&sb, "%02X ", data[j])
 		}
 		// Pad if needed
 		for j := end; j < i+16; j++ {

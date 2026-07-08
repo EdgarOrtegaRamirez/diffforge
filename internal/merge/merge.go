@@ -118,13 +118,13 @@ func FormatMergeResult(result *MergeResult) string {
 	}
 
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("Merge: %d resolved, %d conflicts\n\n",
-		result.Resolved, result.Conflicts))
+	fmt.Fprintf(&sb, "Merge: %d resolved, %d conflicts\n\n",
+		result.Resolved, result.Conflicts)
 
 	for _, op := range result.Ops {
 		switch op.Type {
 		case "conflict":
-			sb.WriteString(fmt.Sprintf("<<<<<<< OLD (line %d)\n", op.Line))
+			fmt.Fprintf(&sb, "<<<<<<< OLD (line %d)\n", op.Line)
 			sb.WriteString(op.Old + "\n")
 			sb.WriteString("=======\n")
 			sb.WriteString(op.New + "\n")

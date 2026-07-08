@@ -30,15 +30,15 @@ func FormatYAMLDiff(result *JSONDiffResult) string {
 	}
 
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("YAML Diff: %d added, %d removed, %d modified\n\n",
-		result.Added, result.Removed, result.Modified))
+	fmt.Fprintf(&sb, "YAML Diff: %d added, %d removed, %d modified\n\n",
+		result.Added, result.Removed, result.Modified)
 
 	for _, op := range result.Ops {
 		switch op.Type {
 		case OpInsert:
-			sb.WriteString(fmt.Sprintf("+ %s = %v\n", op.Path, op.New))
+			fmt.Fprintf(&sb, "+ %s = %v\n", op.Path, op.New)
 		case OpDelete:
-			sb.WriteString(fmt.Sprintf("- %s = %v\n", op.Path, op.Old))
+			fmt.Fprintf(&sb, "- %s = %v\n", op.Path, op.Old)
 		}
 	}
 

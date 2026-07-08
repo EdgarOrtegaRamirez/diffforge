@@ -138,8 +138,8 @@ func FormatCSVDiff(result *CSVDiffResult) string {
 	}
 
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("CSV Diff: %d added, %d removed, %d modified\n\n",
-		result.Added, result.Removed, result.Modified))
+	fmt.Fprintf(&sb, "CSV Diff: %d added, %d removed, %d modified\n\n",
+		result.Added, result.Removed, result.Modified)
 
 	if len(result.Headers) > 0 {
 		sb.WriteString("Headers: ")
@@ -150,11 +150,11 @@ func FormatCSVDiff(result *CSVDiffResult) string {
 	for _, op := range result.Ops {
 		switch op.Type {
 		case OpInsert:
-			sb.WriteString(fmt.Sprintf("+ Row %d: %s\n", op.Row, strings.Join(op.New, " | ")))
+			fmt.Fprintf(&sb, "+ Row %d: %s\n", op.Row, strings.Join(op.New, " | "))
 		case OpDelete:
-			sb.WriteString(fmt.Sprintf("- Row %d: %s\n", op.Row, strings.Join(op.Old, " | ")))
+			fmt.Fprintf(&sb, "- Row %d: %s\n", op.Row, strings.Join(op.Old, " | "))
 		case OpModify:
-			sb.WriteString(fmt.Sprintf("~ Row %d, %s: %q → %q\n", op.Row, op.Column, op.OldVal, op.NewVal))
+			fmt.Fprintf(&sb, "~ Row %d, %s: %q → %q\n", op.Row, op.Column, op.OldVal, op.NewVal)
 		}
 	}
 
