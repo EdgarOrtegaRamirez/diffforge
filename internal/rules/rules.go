@@ -8,8 +8,8 @@ import (
 
 // Rule defines an ignore rule for diff operations.
 type Rule struct {
-	Name    string
-	Pattern *regexp.Regexp
+	Name      string
+	Pattern   *regexp.Regexp
 	Transform func(string) string
 }
 
@@ -97,7 +97,7 @@ func IgnoreTrailingWhitespace() Rule {
 
 // IgnoreLeadingWhitespace creates a rule that ignores leading whitespace.
 func IgnoreLeadingWhitespace() Rule {
-	return Rule {
+	return Rule{
 		Name: "leading-whitespace",
 		Transform: func(s string) string {
 			return strings.TrimLeft(s, " \t")

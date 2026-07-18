@@ -9,11 +9,11 @@ import (
 
 // JSONDiffOp represents a diff operation on a JSON structure.
 type JSONDiffOp struct {
-	Type    OpType
-	Path    string
-	Old     interface{}
-	New     interface{}
-	Key     string
+	Type OpType
+	Path string
+	Old  interface{}
+	New  interface{}
+	Key  string
 }
 
 // JSONDiffResult holds the result of a JSON structural diff.

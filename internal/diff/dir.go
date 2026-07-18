@@ -12,13 +12,13 @@ import (
 
 // DirDiffOp represents a file-level diff operation.
 type DirDiffOp struct {
-	Type     OpType
-	Path     string
-	OldSize  int64
-	NewSize  int64
-	OldHash  string
-	NewHash  string
-	IsDir    bool
+	Type    OpType
+	Path    string
+	OldSize int64
+	NewSize int64
+	OldHash string
+	NewHash string
+	IsDir   bool
 }
 
 // DirDiffResult holds the result of a directory diff.

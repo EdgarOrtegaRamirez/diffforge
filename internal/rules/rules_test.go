@@ -26,7 +26,7 @@ func TestIgnoreBlankLines(t *testing.T) {
 
 func TestIgnoreComments(t *testing.T) {
 	rule := IgnoreComments()
-	
+
 	tests := []struct {
 		input string
 		want  string

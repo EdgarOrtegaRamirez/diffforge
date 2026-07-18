@@ -8,19 +8,19 @@ import (
 
 // MergeOp represents a merge operation.
 type MergeOp struct {
-	Type    string // "keep_base", "keep_old", "keep_new", "conflict"
-	Base    string
-	Old     string
-	New     string
-	Line    int
+	Type string // "keep_base", "keep_old", "keep_new", "conflict"
+	Base string
+	Old  string
+	New  string
+	Line int
 }
 
 // MergeResult holds the result of a three-way merge.
 type MergeResult struct {
-	Ops        []MergeOp
-	Output     string
-	Conflicts  int
-	Resolved   int
+	Ops       []MergeOp
+	Output    string
+	Conflicts int
+	Resolved  int
 }
 
 // ThreeWayMerge performs a three-way merge between base, old, and new.

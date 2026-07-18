@@ -9,13 +9,13 @@ import (
 
 // CSVDiffOp represents a diff operation on CSV data.
 type CSVDiffOp struct {
-	Type    OpType
-	Row     int
-	Old     []string
-	New     []string
-	Column  string
-	OldVal  string
-	NewVal  string
+	Type   OpType
+	Row    int
+	Old    []string
+	New    []string
+	Column string
+	OldVal string
+	NewVal string
 }
 
 // CSVDiffResult holds the result of a CSV diff.
